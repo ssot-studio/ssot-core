@@ -1,9 +1,9 @@
 // catalog(_catalog.json) 로드 · 정규화.
 //
 // 핵심 발견(설계):
-// (1) catalog 의 nodes[].facets.relatesTo 는 문자열로 직렬화되어 손실됨
-//     ('{ to: concept.agent, type: builds }'). 본문 .md frontmatter 는 정상 YAML 객체.
-//     → catalog facets 는 lossy 인덱스 힌트, 본문 frontmatter 가 권위(authority).
+// (1) relatesTo 의 권위(authority)는 본문 .md frontmatter(YAML 객체)다.
+//     현행 catalog 의 nodes[].facets.relatesTo 도 정상 객체({to,type[,note]})로 직렬화되며,
+//     normalizeRelatesToValue 가 객체/문자열 양형을 복원한다(문자열 경로는 구형 catalog 방어용).
 // (2) catalog edges 는 relatesTo 관계타입을 'relatesTo:owns' 접미사로 인코딩.
 //     → ':' 로 분해해 relationType 복원.
 
@@ -93,7 +93,7 @@ export function splitEdgeRel(rel: string): { rel: EdgeRel; relationType?: string
 // ── kind / id 검증 ───────────────────────────────────────────────
 
 const ID_PATTERN =
-  /^(platform|persona|domain|concept|capability|component|integration|invariant|decision|rule)\.[a-z0-9][a-z0-9-]*$/;
+  /^(platform|persona|domain|concept|capability|component|integration|invariant|decision|rule|screen|endpoint|flow)\.[a-z0-9][a-z0-9-]*$/;
 
 function asKind(v: unknown, id: string, errors: ParseError[]): SsotKind {
   if (typeof v === 'string' && (SSOT_KINDS as readonly string[]).includes(v)) {

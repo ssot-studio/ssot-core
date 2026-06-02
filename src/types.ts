@@ -3,10 +3,14 @@
 // 설계 근거:
 // - 스키마(ssot-v1.schema.json)가 facet 을 [축①~④] 로 라벨링하므로 타입으로 승격해
 //   뷰어가 '축별 완전성/누락' 을 컴파일타임에 다룰 수 있게 한다.
-// - relatesTo 는 catalog(문자열, lossy)이 아니라 본문 frontmatter(객체)를 정규형으로
-//   채택한다 — single source of truth 원칙. catalog 의 문자열은 인덱스 힌트로만 쓴다.
+// - relatesTo 의 권위(authority)는 본문 frontmatter(객체)다 — single source of truth 원칙.
+//   현행 catalog(_catalog.json)의 facets.relatesTo 도 정상 객체({to,type[,note]})로 직렬화되며,
+//   normalizeRelatesToValue 가 객체/문자열 양형을 모두 복원한다(문자열 경로는 구형 catalog 방어용).
+//
+// kind 정의(SSOT_KINDS / ID_PREFIX_TO_KIND)는 스키마(ssot-v1.schema.json)의 kind enum / id prefix 와
+// 1:1 로 동기화돼야 한다 — 두 곳이 어긋나면 normalize 가 unknownKind/invalidId 를 토해낸다.
 
-/** 스키마 enum 의 10 종 kind (frontmatter 표기 그대로). */
+/** 스키마 enum 의 13 종 kind (frontmatter 표기 그대로). */
 export type SsotKind =
   | 'Platform'
   | 'Persona'
@@ -17,7 +21,10 @@ export type SsotKind =
   | 'Integration'
   | 'Invariant'
   | 'Decision'
-  | 'EngineeringRule';
+  | 'EngineeringRule'
+  | 'Screen'
+  | 'Endpoint'
+  | 'Flow';
 
 export const SSOT_KINDS: readonly SsotKind[] = [
   'Platform',
@@ -30,6 +37,9 @@ export const SSOT_KINDS: readonly SsotKind[] = [
   'Invariant',
   'Decision',
   'EngineeringRule',
+  'Screen',
+  'Endpoint',
+  'Flow',
 ] as const;
 
 /** id prefix(소문자) → kind 매핑. 스키마 id 패턴의 prefix 와 1:1. */
@@ -44,6 +54,9 @@ export const ID_PREFIX_TO_KIND: Readonly<Record<string, SsotKind>> = {
   invariant: 'Invariant',
   decision: 'Decision',
   rule: 'EngineeringRule',
+  screen: 'Screen',
+  endpoint: 'Endpoint',
+  flow: 'Flow',
 } as const;
 
 export type Confidence = 'high' | 'inferred' | 'unverified';
