@@ -1,0 +1,23 @@
+{
+  "name": "@ssot-studio/core",
+  "version": "0.1.0",
+  "description": "SSOT 코어 — frontmatter/본문 파싱 · 정규화 그래프 · 구조판별 · 트래버설. 의존성 0.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/core.mjs"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "node build.mjs && tsc --emitDeclarationOnly --outDir dist/types",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "typescript": "^5.7.3"
+  }
+}
