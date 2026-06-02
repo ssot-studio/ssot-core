@@ -165,6 +165,8 @@ export function mergeBodyIntoNode(
   if ('confidence' in fm) merged.facets.meta.confidence = asConfidence(fm.confidence);
   if ('lastVerified' in fm) merged.facets.meta.lastVerified = asLastVerified(fm.lastVerified);
 
+  if ('tags' in fm) merged.tags = asStringArray(fm.tags);
+
   if ('authority' in fm) merged.authority = fm.authority === 'mirrored' ? 'mirrored' : 'authored';
   if ('source' in fm) {
     const src = asString(fm.source);

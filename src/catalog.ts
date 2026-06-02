@@ -42,6 +42,8 @@ export interface RawCatalogNode {
   lifecycle?: string;
   lastVerified?: string;
   openCount?: number;
+  /** 분류 태그 — "namespace:value" 형식. catalog top-level. */
+  tags?: unknown;
   facets?: Record<string, unknown>;
 }
 
@@ -172,6 +174,8 @@ function buildNode(raw: RawCatalogNode, errors: ParseError[]): SsotNode {
     title: raw.title ?? asString(facetsRaw.title) ?? raw.id,
     file: raw.file,
     authority: asAuthority(facetsRaw.authority),
+    // 태그: catalog top-level 이 권위. 누락 시 facets.tags 로 폴백(구형/대체 직렬화 방어).
+    tags: asStringArray(raw.tags ?? facetsRaw.tags),
     facets: buildFacets(facetsRaw, raw, errors),
     openCount: typeof raw.openCount === 'number' ? raw.openCount : 0,
   };

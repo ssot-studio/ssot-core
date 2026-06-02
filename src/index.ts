@@ -85,6 +85,16 @@ export type {
   TraverseOptions,
 } from './traversal.js';
 
+// ── 태그 분류 / 필터 ─────────────────────────────────────────────
+export {
+  parseTag,
+  collectTagGroups,
+  nodeMatchesTags,
+  filterNodeIds,
+  NAMESPACE_LABELS,
+} from './tags.js';
+export type { HasTags, ParsedTag, TagNamespaceGroup } from './tags.js';
+
 // ── 구조 판별 ────────────────────────────────────────────────────
 export {
   classify,

@@ -134,6 +134,8 @@ export interface SsotNode {
   authority: Authority;
   /** mirrored 전용 — 원본 파일 경로. */
   source?: string;
+  /** 분류 태그 — "namespace:value" 형식(예: 'domain:auth', 'status:active', 'type:endpoint'). */
+  tags: string[];
   facets: SsotFacets;
   /** 미확정(OPEN) 개수. */
   openCount: number;

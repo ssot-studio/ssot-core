@@ -1,6 +1,6 @@
 {
   "name": "@ssot-studio/core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "SSOT 코어 — frontmatter/본문 파싱 · 정규화 그래프 · 구조판별 · 트래버설. 의존성 0.",
   "license": "MIT",
   "type": "module",
